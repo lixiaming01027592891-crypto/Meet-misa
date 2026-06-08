@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  light?: boolean;
+}
+
+const { title, subtitle, light = false } = Astro.props;
+---
+
+<div class="text-center mb-12">
+  <h2 class={`text-3xl md:text-4xl font-bold mb-4 ${light ? 'text-white' : 'bg-gradient-to-r from-mi-text via-mi-pink-dark to-mi-text bg-clip-text text-transparent'}`}>
+    {title}
+  </h2>
+  {subtitle && (
+    <p class={`text-lg max-w-2xl mx-auto ${light ? 'text-white/70' : 'text-mi-text-light'}`}>
+      {subtitle}
+    </p>
+  )}
+</div>

@@ -1,0 +1,121 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: '首頁' },
+  { href: '/services/eyelash', label: '美睫服務' },
+  { href: '/services/embroidery', label: '紋綉服務' },
+  { href: '/services/beauty', label: '美容美體' },
+  { href: '/portfolio', label: '作品集' },
+  { href: '/blog', label: '部落格' },
+  { href: '/about', label: '關於我們' },
+];
+
+const lineLink = 'https://line.me/R/ti/p/@782faclv';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-mi-white/92 backdrop-blur-xl border-b border-mi-pink/20 transition-all duration-300" id="header">
+  <div class="max-w-7xl mx-auto px-6">
+    <nav class="flex items-center justify-between h-[72px]">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2.5 font-bold text-xl text-mi-text hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full bg-gold-gradient flex items-center justify-center text-white text-lg shadow-gold">Mi</div>
+        <span>遇見Mi美學館</span>
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center gap-8">
+        {navLinks.map(link => (
+          <a 
+            href={link.href} 
+            class={`text-[0.95rem] font-medium transition-all duration-300 relative py-1 ${
+              currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+                ? 'text-mi-pink-dark after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-mi-pink after:rounded-full'
+                : 'text-mi-text hover:text-mi-pink-dark'
+            }`}
+          >
+            {link.label}
+          </a>
+        ))}
+        <a
+          href={lineLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-gradient-to-r from-[#06C755] to-[#05B34C] text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-line"
+          data-track="line"
+        >
+          <img src="/images/line-icon.png" alt="" class="w-5 h-5 rounded-full" loading="lazy" />
+          立即預約
+        </a>
+      </div>
+      
+      <!-- Mobile Toggle -->
+      <button class="lg:hidden flex flex-col gap-1.5 p-2" id="mobile-toggle" aria-label="開啟選單">
+        <span class="w-6 h-0.5 bg-mi-text transition-all duration-300"></span>
+        <span class="w-6 h-0.5 bg-mi-text transition-all duration-300"></span>
+        <span class="w-6 h-0.5 bg-mi-text transition-all duration-300"></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="fixed inset-0 z-[999] bg-black/50 opacity-0 invisible transition-all duration-300" id="mobile-menu">
+  <div class="absolute right-0 top-0 bottom-0 w-[280px] bg-mi-white p-8 translate-x-full transition-transform duration-300" id="mobile-panel">
+    <button class="absolute top-5 right-5 text-2xl text-mi-text" id="mobile-close" aria-label="關閉選單">✕</button>
+    <div class="mt-16 flex flex-col gap-6">
+      {navLinks.map(link => (
+        <a href={link.href} class="text-lg font-medium py-2 border-b border-mi-pink/20 text-mi-text hover:text-mi-pink-dark transition-colors">
+          {link.label}
+        </a>
+      ))}
+      <a
+        href={lineLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#06C755] to-[#05B34C] text-white px-6 py-3 rounded-full font-semibold mt-4"
+        data-track="line"
+      >
+        <img src="/images/line-icon.png" alt="" class="w-5 h-5 rounded-full" loading="lazy" />
+        LINE立即預約
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const header = document.getElementById('header');
+  const mobileToggle = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobilePanel = document.getElementById('mobile-panel');
+  const mobileClose = document.getElementById('mobile-close');
+  
+  // Header scroll effect
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header?.classList.add('shadow-soft');
+    } else {
+      header?.classList.remove('shadow-soft');
+    }
+  });
+  
+  // Mobile menu
+  mobileToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('opacity-0', 'invisible');
+    mobileMenu?.classList.add('opacity-100', 'visible');
+    mobilePanel?.classList.remove('translate-x-full');
+    document.body.style.overflow = 'hidden';
+  });
+  
+  const closeMobile = () => {
+    mobileMenu?.classList.add('opacity-0', 'invisible');
+    mobileMenu?.classList.remove('opacity-100', 'visible');
+    mobilePanel?.classList.add('translate-x-full');
+    document.body.style.overflow = '';
+  };
+  
+  mobileClose?.addEventListener('click', closeMobile);
+  mobileMenu?.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) closeMobile();
+  });
+</script>

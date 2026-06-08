@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+const sortedPosts = posts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+
+// Get unique categories
+const categories = [...new Set(posts.map(p => p.data.category))];
+
+// Get recent posts (exclude current if passed)
+interface Props {
+  currentSlug?: string;
+}
+
+const { currentSlug } = Astro.props;
+const recentPosts = sortedPosts.filter(p => p.slug !== currentSlug).slice(0, 5);
+
+// Get popular tags
+const allTags = posts.flatMap(p => p.data.tags);
+const tagCounts: Record<string, number> = {};
+allTags.forEach(tag => {
+  tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+});
+const popularTags = Object.entries(tagCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10)
+  .map(([tag]) => tag);
+---
+
+<aside class="space-y-8">
+  <!-- Categories -->
+  <div class="bg-white rounded-lg p-6 shadow-soft">
+    <h3 class="font-bold text-lg mb-4">文章分類</h3>
+    <ul class="space-y-2">
+      {categories.map(cat => (
+        <li>
+          <a href={`/blog?category=${encodeURIComponent(cat)}`} class="flex items-center justify-between text-mi-text-light hover:text-mi-pink-dark transition-colors">
+            <span>{cat}</span>
+            <span class="text-xs bg-mi-cream px-2 py-0.5 rounded-full">{posts.filter(p => p.data.category === cat).length}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Recent Posts -->
+  <div class="bg-white rounded-lg p-6 shadow-soft">
+    <h3 class="font-bold text-lg mb-4">最新文章</h3>
+    <ul class="space-y-4">
+      {recentPosts.map(post => (
+        <li>
+          <a href={`/blog/${post.slug}`} class="group flex gap-3">
+            <img src={post.data.image} alt={post.data.title} class="w-16 h-16 rounded object-cover flex-shrink-0" loading="lazy" />
+            <div>
+              <h4 class="text-sm font-medium group-hover:text-mi-pink-dark transition-colors line-clamp-2">{post.data.title}</h4>
+              <span class="text-xs text-mi-text-light">{new Date(post.data.publishDate).toLocaleDateString('zh-TW', { month: 'short', day: 'numeric' })}</span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Popular Tags -->
+  <div class="bg-white rounded-lg p-6 shadow-soft">
+    <h3 class="font-bold text-lg mb-4">熱門標籤</h3>
+    <div class="flex flex-wrap gap-2">
+      {popularTags.map(tag => (
+        <a href={`/blog?tag=${encodeURIComponent(tag)}`} class="bg-mi-cream text-mi-text-light px-3 py-1 rounded-full text-sm hover:bg-mi-pink hover:text-white transition-colors">
+          {tag}
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="bg-gradient-to-br from-mi-pink/20 to-mi-gold/10 rounded-lg p-6 text-center">
+    <h3 class="font-bold mb-2">想預約服務？</h3>
+    <p class="text-sm text-mi-text-light mb-4">加入LINE好友，免費諮詢適合妳的療程</p>
+    <a href="https://line.me/R/ti/p/@782faclv" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gradient-to-r from-[#06C755] to-[#05B34C] text-white px-5 py-2.5 rounded-full font-semibold text-sm" data-track="line">
+      <img src="/images/line-icon.png" alt="" class="w-4 h-4 rounded-full" loading="lazy" />
+      LINE諮詢
+    </a>
+  </div>
+</aside>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

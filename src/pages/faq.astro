@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingLineButton from '../components/FloatingLineButton.astro';
+import LineCTA from '../components/LineCTA.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import { getCollection } from 'astro:content';
+
+const faqItems = await getCollection('faq');
+const sortedFaq = faqItems.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+const categories = [...new Set(sortedFaq.map(f => f.data.category))];
+
+const pageTitle = '常見問題 | 遇見Mi美學館 - 美睫/紋綉/美容FAQ';
+const pageDesc = '遇見Mi美學館常見問題解答，包含美睫、紋綉、美容等服務的相關疑問。';
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <Header />
+  
+  <!-- Page Header -->
+  <section class="pt-[140px] pb-16 bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">常見問題</h1>
+      <p class="text-mi-text-light text-lg max-w-2xl mx-auto">
+        關於我們服務的常見疑問，幫助您更了解遇見Mi
+      </p>
+    </div>
+  </section>
+  
+  <!-- FAQ Content -->
+  <section class="section-padding bg-mi-white">
+    <div class="container-mi">
+      <div class="max-w-3xl mx-auto">
+        {categories.map(category => (
+          <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-center">
+              <span class="inline-block bg-mi-pink/20 text-mi-pink-dark px-6 py-2 rounded-full">{category}</span>
+            </h2>
+            <div class="space-y-4">
+              {sortedFaq.filter(f => f.data.category === category).map((item, i) => (
+                <div class="bg-white rounded-lg shadow-soft overflow-hidden" data-faq-item>
+                  <button 
+                    class="w-full px-6 py-5 flex justify-between items-center text-left font-semibold hover:bg-mi-cream/30 transition-colors"
+                    onclick="
+                      const parent = this.parentElement;
+                      const answer = this.nextElementSibling;
+                      const wasActive = parent.classList.contains('active');
+                      document.querySelectorAll('[data-faq-item]').forEach(el => {
+                        el.classList.remove('active');
+                        el.querySelector('[data-faq-answer]').style.maxHeight = '0';
+                      });
+                      if (!wasActive) {
+                        parent.classList.add('active');
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                      }
+                    "
+                  >
+                    <span class="pr-4">{item.data.question}</span>
+                    <span class="flex-shrink-0 text-mi-text-light transition-transform duration-300" data-faq-icon>▼</span>
+                  </button>
+                  <div class="px-6 overflow-hidden transition-all duration-300 max-h-0" data-faq-answer>
+                    <p class="pb-5 text-mi-text-light leading-relaxed">{item.data.answer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <!-- Still have questions -->
+      <div class="mt-16 text-center bg-gradient-to-br from-mi-cream to-white rounded-lg p-10 max-w-2xl mx-auto">
+        <h3 class="text-2xl font-bold mb-3">還有其他問題？</h3>
+        <p class="text-mi-text-light mb-6">歡迎直接加入LINE好友，MiSa老師親自為您解答</p>
+        <LineCTA variant="primary" text="LINE免費諮詢" />
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+  <FloatingLineButton />
+</Layout>
+
+<style>
+  [data-faq-item].active [data-faq-icon] {
+    transform: rotate(180deg);
+  }
+</style>

@@ -1,0 +1,261 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FloatingLineButton from '../../components/FloatingLineButton.astro';
+import BlogSidebar from '../../components/blog/BlogSidebar.astro';
+import LineCTA from '../../components/LineCTA.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await post.render();
+
+const { data } = post;
+const formattedDate = new Date(data.publishDate).toLocaleDateString('zh-TW', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+// Reading time estimate
+const readingTime = data.readingTime || Math.ceil(data.description.length / 200) + 3;
+
+// Get related posts
+const allPosts = await getCollection('posts');
+const relatedPosts = allPosts
+  .filter(p => p.slug !== post.slug && p.data.category === data.category)
+  .slice(0, 3);
+
+const pageTitle = `${data.title} | 遇見Mi美學館部落格`;
+---
+
+<Layout title={pageTitle} description={data.description} image={data.image} type="article">
+  <!-- Article Structured Data -->
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": data.title,
+    "description": data.description,
+    "image": data.image,
+    "datePublished": data.publishDate.toISOString(),
+    "dateModified": (data.updatedDate || data.publishDate).toISOString(),
+    "author": {
+      "@type": "Organization",
+      "name": data.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "遇見Mi美學館",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://meetmi-aesthetics.pages.dev/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://meetmi-aesthetics.pages.dev/blog/${post.slug}`
+    }
+  })} />
+  
+  <Header />
+  
+  <!-- Breadcrumb -->
+  <div class="pt-[100px] pb-6 bg-mi-white">
+    <div class="container-mi">
+      <nav class="text-sm text-mi-text-light">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="text-mi-pink-dark hover:underline">首頁</a></li>
+          <li>/</li>
+          <li><a href="/blog" class="text-mi-pink-dark hover:underline">部落格</a></li>
+          <li>/</li>
+          <li class="text-mi-text">{data.title}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Article Header -->
+  <section class="pb-10 bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi">
+      <div class="max-w-4xl mx-auto">
+        <span class="inline-block bg-gold-gradient text-white px-4 py-1.5 rounded-full text-sm font-bold mb-4">
+          {data.category}
+        </span>
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-4">{data.title}</h1>
+        <p class="text-lg text-mi-text-light mb-6">{data.description}</p>
+        <div class="flex flex-wrap items-center gap-4 text-sm text-mi-text-light">
+          <span>{formattedDate}</span>
+          <span>·</span>
+          <span>作者：{data.author}</span>
+          <span>·</span>
+          <span>閱讀時間約 {readingTime} 分鐘</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Article Content -->
+  <section class="section-padding bg-mi-white">
+    <div class="container-mi">
+      <div class="grid lg:grid-cols-3 gap-10">
+        <!-- Main Article -->
+        <div class="lg:col-span-2">
+          <!-- Cover Image -->
+          <img 
+            src={data.image} 
+            alt={data.title}
+            class="w-full h-80 md:h-96 object-cover rounded-lg shadow-medium mb-10"
+            loading="eager"
+          />
+          
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-2 mb-8">
+            {data.tags.map(tag => (
+              <span class="bg-mi-cream text-mi-pink-dark px-3 py-1 rounded-full text-sm">{tag}</span>
+            ))}
+          </div>
+          
+          <!-- Article Body -->
+          <article class="prose prose-lg max-w-none">
+            <Content />
+          </article>
+          
+          <!-- CTA -->
+          <div class="mt-12 bg-gradient-to-br from-mi-cream to-white rounded-lg p-8 text-center">
+            <h3 class="text-2xl font-bold mb-3">喜歡這篇文章？</h3>
+            <p class="text-mi-text-light mb-6">立即預約體驗，讓MiSa老師為妳打造專屬美麗方案</p>
+            <LineCTA variant="large" />
+          </div>
+          
+          <!-- Related Posts -->
+          {relatedPosts.length > 0 && (
+            <div class="mt-12">
+              <h3 class="text-xl font-bold mb-6">相關文章</h3>
+              <div class="grid md:grid-cols-3 gap-6">
+                {relatedPosts.map(p => (
+                  <a href={`/blog/${p.slug}`} class="group block bg-white rounded-lg overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1">
+                    <div class="h-36 overflow-hidden">
+                      <img src={p.data.image} alt={p.data.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                    </div>
+                    <div class="p-4">
+                      <h4 class="font-bold text-sm group-hover:text-mi-pink-dark transition-colors line-clamp-2">{p.data.title}</h4>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="hidden lg:block">
+          <BlogSidebar currentSlug={post.slug} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+  <FloatingLineButton />
+</Layout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* Markdown content styling */
+  article :global(h2) {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: #2C2C2C;
+  }
+  
+  article :global(h3) {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #2C2C2C;
+  }
+  
+  article :global(p) {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+    color: #4A4A4A;
+  }
+  
+  article :global(ul), article :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  
+  article :global(li) {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+  
+  article :global(blockquote) {
+    border-left: 4px solid #D4AF37;
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #6B6B6B;
+  }
+  
+  article :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  
+  article :global(th), article :global(td) {
+    border: 1px solid #E8B4D9;
+    padding: 0.75rem;
+    text-align: left;
+  }
+  
+  article :global(th) {
+    background: linear-gradient(135deg, #E8B4D9 0%, #D49BC4 100%);
+    color: white;
+    font-weight: 600;
+  }
+  
+  article :global(tr:nth-child(even)) {
+    background: #FFF5F7;
+  }
+  
+  article :global(hr) {
+    border: none;
+    border-top: 2px solid #E8B4D9;
+    margin: 2rem 0;
+  }
+  
+  article :global(strong) {
+    color: #2C2C2C;
+    font-weight: 700;
+  }
+  
+  article :global(a) {
+    color: #D49BC4;
+    text-decoration: underline;
+  }
+  
+  article :global(a:hover) {
+    color: #D4AF37;
+  }
+</style>

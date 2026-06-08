@@ -1,0 +1,27 @@
+{
+  "name": "meetmi-aesthetics",
+  "version": "1.0.0",
+  "description": "遇見Mi美學館官方網站 - Astro 5.x + Content Collections",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "@astrojs/tailwind": "^6.0.0",
+    "tailwindcss": "^3.4.0",
+    "astro-icon": "^1.1.0",
+    "astro-seo": "^0.8.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@tailwindcss/typography": "^0.5.15"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

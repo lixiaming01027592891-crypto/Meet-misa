@@ -1,0 +1,189 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FloatingLineButton from '../../components/FloatingLineButton.astro';
+import LineCTA from '../../components/LineCTA.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map(service => ({
+    params: { slug: service.data.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { data } = service;
+
+// Get related services
+const allServices = await getCollection('services');
+const relatedServices = allServices
+  .filter(s => s.data.id !== data.id)
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+const pageTitle = `${data.title} | 遇見Mi美學館 - 台北${data.title}推薦`;
+const pageDesc = data.description;
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <Header />
+  
+  <!-- Breadcrumb -->
+  <div class="pt-[100px] pb-8 bg-mi-white">
+    <div class="container-mi">
+      <nav class="text-sm text-mi-text-light">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="text-mi-pink-dark hover:underline">首頁</a></li>
+          <li>/</li>
+          <li class="text-mi-text">{data.title}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Hero -->
+  <section class="pb-16 bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="inline-block bg-gold-gradient text-white px-4 py-1.5 rounded-full text-sm font-bold mb-4">
+            {data.subtitle}
+          </span>
+          <h1 class="text-4xl md:text-5xl font-extrabold mb-6">{data.title}</h1>
+          <p class="text-lg text-mi-text-light leading-relaxed mb-8">{data.longDescription}</p>
+          
+          <!-- Features -->
+          <div class="grid grid-cols-2 gap-4 mb-8">
+            {data.features.slice(0, 4).map(feature => (
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-full bg-[#06C755] flex items-center justify-center text-white text-xs flex-shrink-0">✓</div>
+                <span class="text-sm font-medium">{feature}</span>
+              </div>
+            ))}
+          </div>
+          
+          <LineCTA variant="large" text={`預約${data.title}諮詢`} />
+        </div>
+        
+        <div>
+          <img 
+            src={data.image} 
+            alt={`遇見Mi美學館 - ${data.title}服務`}
+            class="rounded-lg shadow-strong w-full"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Details -->
+  <section class="section-padding bg-mi-white">
+    <div class="container-mi">
+      <SectionTitle title="服務特色" subtitle="為什麼選擇遇見Mi的專業服務" />
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {data.details.map(detail => (
+          <div class="bg-white rounded-lg p-8 shadow-soft text-center hover:shadow-medium transition-all duration-300 hover:-translate-y-1">
+            <div class="text-4xl mb-4">{detail.icon}</div>
+            <h3 class="font-bold text-lg mb-2">{detail.title}</h3>
+            <p class="text-mi-text-light text-sm leading-relaxed">{detail.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pricing -->
+  <section class="section-padding bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi">
+      <SectionTitle title="價格方案" subtitle="透明合理的價格，無隱藏費用" />
+      <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        {data.pricing.map(plan => (
+          <div class={`bg-white rounded-lg p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-2 hover:shadow-medium relative ${plan.featured ? 'border-2 border-mi-gold' : ''}`}>
+            {plan.featured && (
+              <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold-gradient text-white px-5 py-1 rounded-full text-xs font-bold">
+                最熱門
+              </span>
+            )}
+            <h3 class="font-bold text-lg mb-2">{plan.name}</h3>
+            <div class="text-3xl font-extrabold text-gradient-gold mb-1">{plan.price}<span class="text-base font-normal text-mi-text-light ml-1">{plan.unit}</span></div>
+            <p class="text-sm text-mi-text-light mb-6">{plan.description}</p>
+            <LineCTA variant="primary" text="立即預約" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ -->
+  {data.faq && data.faq.length > 0 && (
+    <section class="section-padding bg-mi-white">
+      <div class="container-mi">
+        <SectionTitle title="常見問題" subtitle="關於本服務的常見疑問解答" />
+        <div class="max-w-3xl mx-auto space-y-4">
+          {data.faq.map((item, i) => (
+            <div class="bg-white rounded-lg shadow-soft overflow-hidden" data-faq-item>
+              <button 
+                class="w-full px-6 py-5 flex justify-between items-center text-left font-semibold hover:bg-mi-cream/50 transition-colors"
+                onclick="this.parentElement.classList.toggle('active');this.nextElementSibling.style.maxHeight=this.parentElement.classList.contains('active')?this.nextElementSibling.scrollHeight+'px':'0'"
+              >
+                <span>{item.question}</span>
+                <span class="flex-shrink-0 ml-4 text-mi-text-light transition-transform" data-faq-icon>▼</span>
+              </button>
+              <div class="px-6 overflow-hidden transition-all duration-300 max-h-0" data-faq-answer>
+                <p class="pb-5 text-mi-text-light leading-relaxed">{item.answer}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  
+  <!-- Related Services -->
+  <section class="section-padding bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi">
+      <SectionTitle title="其他服務" subtitle="探索更多遇見Mi的專業美學服務" />
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {relatedServices.map(s => (
+          <a href={`/services/${s.data.id}`} class="group bg-white rounded-lg overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-2">
+            <div class="h-48 overflow-hidden">
+              <img 
+                src={s.data.image} 
+                alt={s.data.title}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="font-bold text-lg mb-2">{s.data.title}</h3>
+              <p class="text-mi-text-light text-sm">{s.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA -->
+  <section class="section-padding bg-cta-gradient relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-mi-pink/10 to-transparent pointer-events-none"></div>
+    <div class="container-mi relative z-10 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">準備好體驗<span class="text-gradient-gold">{data.title}</span>了嗎？</h2>
+      <p class="text-white/70 mb-8 max-w-xl mx-auto">現在加入LINE好友，免費諮詢適合妳的方案，首次預約還有專屬優惠！</p>
+      <LineCTA variant="large" />
+    </div>
+  </section>
+
+  <Footer />
+  <FloatingLineButton />
+</Layout>
+
+<style>
+  [data-faq-item].active [data-faq-icon] {
+    transform: rotate(180deg);
+  }
+</style>

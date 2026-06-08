@@ -1,0 +1,26 @@
+---
+interface Props {
+  variant?: 'primary' | 'large' | 'footer';
+  text?: string;
+}
+
+const { variant = 'primary', text = 'LINE免費諮詢' } = Astro.props;
+const lineLink = 'https://line.me/R/ti/p/@782faclv';
+
+const styles = {
+  primary: 'inline-flex items-center gap-2 bg-gradient-to-r from-[#06C755] to-[#05B34C] text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-line',
+  large: 'inline-flex items-center gap-3 bg-gradient-to-r from-[#06C755] to-[#05B34C] text-white px-10 py-5 rounded-full font-bold text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-line',
+  footer: 'inline-flex items-center gap-2 bg-gradient-to-r from-[#06C755] to-[#05B34C] text-white px-8 py-4 rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-line',
+};
+---
+
+<a 
+  href={lineLink} 
+  target="_blank" 
+  rel="noopener noreferrer"
+  class={styles[variant]}
+  data-track="line"
+>
+  <img src="/images/line-icon.png" alt="" class={`rounded-full flex-shrink-0 ${variant === 'large' ? 'w-7 h-7' : 'w-5 h-5'}`} loading="lazy" />
+  {text}
+</a>

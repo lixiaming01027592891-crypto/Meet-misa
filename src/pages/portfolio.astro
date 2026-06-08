@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingLineButton from '../components/FloatingLineButton.astro';
+import LineCTA from '../components/LineCTA.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+
+const pageTitle = '作品集 | 遇見Mi美學館 - 真實客戶改造效果';
+const pageDesc = '查看遇見Mi美學館的真實客戶改造效果，包含美睫、霧眉、美容等前後對比照片。所有照片皆為真實客戶授權分享。';
+
+const galleryItems = [
+  { src: '/images/before-after-1.jpg', title: '6D美睫嫁接', category: '美睫', desc: '自然濃密，持久1.5-2個月' },
+  { src: '/images/before-after-2.jpg', title: '星柔空氣眉', category: '紋綉', desc: '自然如眉粉輕刷的效果' },
+  { src: '/images/service-eyelash.jpg', title: '美睫特寫', category: '美睫', desc: '精緻嫁接技術展示' },
+  { src: '/images/service-embroidery.jpg', title: '霧眉完成照', category: '紋綉', desc: '細膩自然的霧眉效果' },
+  { src: '/images/hero-model.jpg', title: '整體造型', category: '美睫', desc: '美睫+妝容整體效果' },
+  { src: '/images/service-beauty.jpg', title: '美容護理', category: '美容', desc: '專業臉部保養' },
+];
+
+const categories = ['全部', '美睫', '紋綉', '美容'];
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <Header />
+  
+  <!-- Page Header -->
+  <section class="pt-[140px] pb-16 bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">作品集</h1>
+      <p class="text-mi-text-light text-lg max-w-2xl mx-auto">
+        真實客戶改造效果，所有照片皆經客戶授權分享
+      </p>
+    </div>
+  </section>
+  
+  <!-- Gallery -->
+  <section class="section-padding bg-mi-white">
+    <div class="container-mi">
+      <!-- Category Filter -->
+      <div class="flex justify-center gap-3 mb-12 flex-wrap">
+        {categories.map((cat, i) => (
+          <button 
+            class={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${i === 0 ? 'bg-gold-gradient text-white shadow-gold' : 'bg-mi-cream text-mi-text hover:bg-mi-pink hover:text-white'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+      
+      <!-- Gallery Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {galleryItems.map((item, i) => (
+          <div class="group bg-white rounded-lg overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+            <div class="relative overflow-hidden h-72">
+              <img 
+                src={item.src} 
+                alt={`遇見Mi美學館 - ${item.title}`}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="text-white">
+                  <span class="text-xs bg-mi-gold/80 px-3 py-1 rounded-full mb-2 inline-block">{item.category}</span>
+                  <h3 class="font-bold text-lg">{item.title}</h3>
+                </div>
+              </div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs text-mi-pink-dark font-semibold bg-mi-pink/10 px-2 py-1 rounded-full">{item.category}</span>
+                  <h3 class="font-bold mt-2">{item.title}</h3>
+                </div>
+                <span class="text-mi-text-light text-sm">{item.desc}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <!-- More CTA -->
+      <div class="text-center mt-12 bg-gradient-to-br from-mi-cream to-white rounded-lg p-10">
+        <h3 class="text-2xl font-bold mb-3">想看更多作品？</h3>
+        <p class="text-mi-text-light mb-6">加入LINE好友，查看更多即時作品和限時優惠</p>
+        <LineCTA variant="primary" />
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA -->
+  <section class="section-padding bg-cta-gradient relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-mi-pink/10 to-transparent pointer-events-none"></div>
+    <div class="container-mi relative z-10 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">想擁有<span class="text-gradient-gold">同款美麗</span>？</h2>
+      <p class="text-white/70 mb-8 max-w-xl mx-auto">現在預約免費諮詢，MiSa老師為妳量身打造最適合的美睫/紋綉方案</p>
+      <LineCTA variant="large" />
+    </div>
+  </section>
+
+  <Footer />
+  <FloatingLineButton />
+</Layout>

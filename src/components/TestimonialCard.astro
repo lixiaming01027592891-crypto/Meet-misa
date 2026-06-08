@@ -1,0 +1,26 @@
+---
+interface Props {
+  name: string;
+  initials: string;
+  service: string;
+  rating: number;
+  text: string;
+}
+
+const { name, initials, service, rating, text } = Astro.props;
+const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+---
+
+<div class="bg-mi-white rounded-lg p-8 relative transition-all duration-300 hover:-translate-y-1 hover:shadow-soft">
+  <div class="text-mi-gold text-lg mb-4 tracking-wider">{stars}</div>
+  <p class="text-mi-text leading-relaxed mb-6 text-[0.95rem]">"{text}"</p>
+  <div class="flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-mi-pink to-mi-gold flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+      {initials}
+    </div>
+    <div>
+      <div class="font-semibold text-mi-text">{name}</div>
+      <div class="text-sm text-mi-text-light">{service}</div>
+    </div>
+  </div>
+</div>

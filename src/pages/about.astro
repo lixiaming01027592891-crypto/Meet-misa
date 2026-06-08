@@ -1,0 +1,166 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingLineButton from '../components/FloatingLineButton.astro';
+import LineCTA from '../components/LineCTA.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import { getCollection } from 'astro:content';
+
+const team = await getCollection('team');
+
+const pageTitle = '關於我們 | 遇見Mi美學館 - 遇見MiSa，遇見更美的自己';
+const pageDesc = '遇見Mi美學館由2022 PEA國際6D美睫冠軍MiSa老師創立，提供超持久美睫、半永久紋綉、美容美體一站式服務。';
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <Header />
+  
+  <!-- Page Header -->
+  <section class="pt-[140px] pb-16 bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">關於我們</h1>
+      <p class="text-mi-text-light text-lg max-w-2xl mx-auto">
+        遇見Mi美學館的故事，從一個對美的執著開始
+      </p>
+    </div>
+  </section>
+  
+  <!-- Brand Story -->
+  <section class="section-padding bg-mi-white">
+    <div class="container-mi">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <img 
+            src="/images/studio-env.jpg" 
+            alt="遇見Mi美學館 - 溫馨舒適的美容工作室環境"
+            class="rounded-lg shadow-strong w-full"
+            loading="eager"
+          />
+        </div>
+        <div>
+          <span class="inline-block bg-mi-pink/20 text-mi-pink-dark px-4 py-1.5 rounded-full text-sm font-semibold mb-4">品牌故事</span>
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">
+            從廣告設計到<span class="text-gradient-gold">美睫藝術</span>
+          </h2>
+          <div class="space-y-4 text-mi-text-light leading-relaxed">
+            <p>
+              MiSa老師原本學的是廣告設計，也曾從事寵物美容工作。對美感的過人執著，讓她在接觸美睫後便深深著迷——每一根睫毛的排列、每一個弧度的設計，都是藝術的呈現。
+            </p>
+            <p>
+              2022年，MiSa老師榮獲PEA國際6D美睫冠軍頭銜，這份榮耀不僅是對技術的肯定，更是對「美」這件事的堅持。同年，遇見Mi美學館在台北雙連站誕生。
+            </p>
+            <p>
+              「遇見Mi」不僅是遇見MiSa老師，更是遇見「美麗的自己」。我們希望每位走進遇見Mi的客人，都能在這裡找到屬於自己的美麗模樣。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Team -->
+  <section class="section-padding bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi">
+      <SectionTitle title="專業團隊" subtitle="每位老師都擁有豐富的專業經驗和認證資格" />
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {team.map(member => (
+          <div class="bg-white rounded-lg overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-2">
+            <div class="h-80 overflow-hidden">
+              <img 
+                src={member.data.image} 
+                alt={`${member.data.name} - ${member.data.role}`}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-1">{member.data.name}</h3>
+              <p class="text-mi-pink-dark font-medium text-sm mb-3">{member.data.role}</p>
+              <p class="text-mi-text-light text-sm leading-relaxed mb-4">{member.data.bio}</p>
+              <div class="space-y-2">
+                <p class="text-xs font-semibold text-mi-text-light uppercase tracking-wider">專業認證</p>
+                {member.data.certifications.slice(0, 3).map(cert => (
+                  <div class="flex items-center gap-2 text-sm">
+                    <span class="text-mi-gold">★</span>
+                    <span>{cert}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Values -->
+  <section class="section-padding bg-mi-white">
+    <div class="container-mi">
+      <SectionTitle title="我們的堅持" subtitle="五大服務承諾，讓妳安心享受美麗" />
+      <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+        {[
+          { icon: '🏆', title: '冠軍技術', desc: '國際冠軍親自操作' },
+          { icon: '🛡️', title: '安全認證', desc: 'SGS檢驗合格材料' },
+          { icon: '✨', title: '客製設計', desc: '依眼型量身打造' },
+          { icon: '♻️', title: '衛生標準', desc: '拋棄式滅菌工具' },
+          { icon: '💯', title: '滿意保證', desc: '一週內免費保固' },
+        ].map(value => (
+          <div class="bg-gradient-to-br from-mi-cream to-white rounded-lg p-6 text-center shadow-soft">
+            <div class="text-4xl mb-3">{value.icon}</div>
+            <h3 class="font-bold mb-1">{value.title}</h3>
+            <p class="text-sm text-mi-text-light">{value.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Environment -->
+  <section class="section-padding bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi">
+      <SectionTitle title="環境空間" subtitle="溫馨舒適的美學空間，讓妳享受每一刻的變美時光" />
+      <div class="grid md:grid-cols-2 gap-6">
+        <img src="/images/studio-env.jpg" alt="遇見Mi美學館工作室環境" class="rounded-lg shadow-medium w-full h-80 object-cover" loading="lazy" />
+        <div class="bg-white rounded-lg p-8 shadow-soft flex flex-col justify-center">
+          <h3 class="text-2xl font-bold mb-4">溫馨如家的美學空間</h3>
+          <ul class="space-y-3 text-mi-text-light">
+            <li class="flex items-start gap-3">
+              <span class="text-mi-gold mt-0.5">✓</span>
+              <span>交通便利，雙連站1號出口步行僅30秒</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-mi-gold mt-0.5">✓</span>
+              <span>時尚白搭配浪漫粉紫的溫馨裝潢</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-mi-gold mt-0.5">✓</span>
+              <span>乾淨明亮的專業操作空間</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-mi-gold mt-0.5">✓</span>
+              <span>LGBTQ+友善空間</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-mi-gold mt-0.5">✓</span>
+              <span>完全預約制，享受專屬服務時光</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA -->
+  <section class="section-padding bg-cta-gradient relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-mi-pink/10 to-transparent pointer-events-none"></div>
+    <div class="container-mi relative z-10 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">來<span class="text-gradient-gold">遇見Mi</span>，遇見更美的自己</h2>
+      <p class="text-white/70 mb-8 max-w-xl mx-auto">現在加入LINE好友預約，首次體驗享有專屬優惠！</p>
+      <LineCTA variant="large" />
+    </div>
+  </section>
+
+  <Footer />
+  <FloatingLineButton />
+</Layout>

@@ -1,0 +1,87 @@
+---
+const lineLink = 'https://line.me/R/ti/p/@782faclv';
+const igLink = 'https://www.instagram.com/meet_misaki0112';
+
+const footerLinks = {
+  services: [
+    { href: '/services/eyelash', label: '超持久美睫' },
+    { href: '/services/embroidery', label: '半永久紋綉' },
+    { href: '/services/beauty', label: '美容美體' },
+  ],
+  quick: [
+    { href: '/about', label: '關於我們' },
+    { href: '/portfolio', label: '作品集' },
+    { href: '/faq', label: '常見問題' },
+  ],
+};
+---
+
+<footer class="bg-mi-dark text-white/70">
+  <div class="max-w-7xl mx-auto px-6 pt-16 pb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <a href="/" class="flex items-center gap-2.5 font-bold text-xl text-white mb-4">
+          <div class="w-10 h-10 rounded-full bg-gold-gradient flex items-center justify-center text-white text-lg">Mi</div>
+          <span>遇見Mi美學館</span>
+        </a>
+        <p class="text-sm leading-relaxed mb-6">
+          全台北公認最持久睫毛，一站式美學服務。<br>
+          讓妳不用跑很多地方，也能享受全方位的美麗。
+        </p>
+        <div class="flex gap-3">
+          <a href={igLink} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-mi-pink transition-all duration-300 hover:-translate-y-1" aria-label="Instagram">
+            IG
+          </a>
+          <a href={lineLink} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#06C755] transition-all duration-300 hover:-translate-y-1" aria-label="LINE">
+            <span class="text-sm font-bold">L</span>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Services -->
+      <div>
+        <h4 class="text-white font-semibold text-lg mb-5">服務項目</h4>
+        <ul class="space-y-3">
+          {footerLinks.services.map(link => (
+            <li><a href={link.href} class="text-sm hover:text-mi-pink transition-colors duration-300">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-white font-semibold text-lg mb-5">快速連結</h4>
+        <ul class="space-y-3">
+          {footerLinks.quick.map(link => (
+            <li><a href={link.href} class="text-sm hover:text-mi-pink transition-colors duration-300">{link.label}</a></li>
+          ))}
+          <li><a href={lineLink} target="_blank" rel="noopener noreferrer" class="text-sm hover:text-mi-pink transition-colors duration-300">LINE預約</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact -->
+      <div>
+        <h4 class="text-white font-semibold text-lg mb-5">聯絡我們</h4>
+        <ul class="space-y-4 text-sm">
+          <li class="flex items-start gap-3">
+            <span class="text-mi-pink flex-shrink-0 mt-0.5">📍</span>
+            <span>台北市大同區民生西路94號2樓<br>（雙連站1號出口30秒）</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="text-mi-pink flex-shrink-0">📞</span>
+            <span>0989-260-867</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-mi-pink flex-shrink-0 mt-0.5">⏰</span>
+            <span>週一至週日 11:00-20:00<br>（完全預約制）</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="border-t border-white/10 pt-8 text-center text-sm">
+      <p>&copy; {new Date().getFullYear()} 遇見Mi美學館 版權所有 | 統一編號認證</p>
+    </div>
+  </div>
+</footer>

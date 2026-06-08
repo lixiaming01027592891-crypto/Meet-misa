@@ -1,0 +1,138 @@
+---
+import '../styles/global.css';
+import { SEO } from 'astro-seo';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = '遇見Mi美學館 | 台北美睫推薦 - 全台北公認最持久睫毛',
+  description = '遇見Mi美學館位於台北雙連站，提供超持久美睫、半永久紋綉、美容美體一站式服務。Google 5.0星評價(224評論)，比男友還持久的睫毛。LINE預約享優惠。',
+  image = '/images/hero-model.jpg',
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://meetmi-aesthetics.pages.dev');
+const ogImage = new URL(image, Astro.site || 'https://meetmi-aesthetics.pages.dev');
+---
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#E8B4D9">
+  <meta name="format-detection" content="telephone=no">
+  
+  <SEO
+    title={title}
+    description={description}
+    canonical={canonicalURL.toString()}
+    noindex={noindex}
+    openGraph={{
+      basic: {
+        title: title,
+        type: type,
+        image: ogImage.toString(),
+        url: canonicalURL.toString(),
+      },
+      optional: {
+        description: description,
+        locale: 'zh_TW',
+        siteName: '遇見Mi美學館',
+      },
+      image: {
+        alt: '遇見Mi美學館 - 台北美睫推薦',
+        width: 1200,
+        height: 630,
+      },
+    }}
+    twitter={{
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      image: ogImage.toString(),
+      imageAlt: '遇見Mi美學館',
+    }}
+    extend={{
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'apple-touch-icon', href: '/favicon.svg' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
+        { rel: 'sitemap', href: '/sitemap-index.xml' },
+      ],
+      meta: [
+        { name: 'keywords', content: '台北美睫,雙連站美睫,美睫推薦,霧眉,紋綉,美容美體,遇見Mi美學館,持久睫毛,日式美睫,6D美睫' },
+      ],
+    }}
+  />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Structured Data: LocalBusiness -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BeautySalon",
+    "name": "遇見Mi美學館",
+    "image": `${canonicalURL.origin}/images/hero-model.jpg`,
+    "url": canonicalURL.origin,
+    "telephone": "+886989260867",
+    "email": "a0989260867@gmail.com",
+    "priceRange": "$$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "民生西路94號2樓",
+      "addressLocality": "台北市",
+      "addressRegion": "大同區",
+      "postalCode": "103",
+      "addressCountry": "TW"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 25.0575,
+      "longitude": 121.5190
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "11:00",
+        "closes": "20:00"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "224",
+      "bestRating": "5",
+      "worstRating": "5"
+    },
+    "sameAs": [
+      "https://www.instagram.com/meet_misaki0112"
+    ]
+  })} />
+  
+  <!-- WebSite Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "遇見Mi美學館",
+    "url": canonicalURL.origin,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${canonicalURL.origin}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  })} />
+</head>
+<body class="font-sans bg-mi-white text-mi-text antialiased">
+  <slot />
+</body>
+</html>

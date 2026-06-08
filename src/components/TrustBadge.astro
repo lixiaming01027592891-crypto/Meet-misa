@@ -1,0 +1,17 @@
+---
+interface Props {
+  icon: string;
+  title: string;
+  desc: string;
+}
+
+const { icon, title, desc } = Astro.props;
+---
+
+<div class="text-center p-6">
+  <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-mi-pink/20 to-mi-gold/15 flex items-center justify-center text-3xl">
+    {icon}
+  </div>
+  <h3 class="font-semibold text-mi-text mb-1">{title}</h3>
+  <p class="text-sm text-mi-text-light">{desc}</p>
+</div>

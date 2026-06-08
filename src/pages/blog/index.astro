@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FloatingLineButton from '../../components/FloatingLineButton.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import BlogSidebar from '../../components/blog/BlogSidebar.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts');
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+
+const featuredPost = sortedPosts.find(p => p.data.featured);
+const otherPosts = sortedPosts.filter(p => p.slug !== featuredPost?.slug);
+
+// Get unique categories for filter
+const categories = ['全部', ...new Set(allPosts.map(p => p.data.category))];
+
+const pageTitle = '部落格 | 遇見Mi美學館 - 美睫、紋綉、美容知識分享';
+const pageDesc = '遇見Mi美學館部落格，分享美睫保養、紋綉知識、美容秘訣。由專業團隊撰寫，幫助你更了解自己的美麗需求。';
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <Header />
+  
+  <!-- Page Header -->
+  <section class="pt-[140px] pb-16 bg-gradient-to-br from-mi-cream to-mi-white">
+    <div class="container-mi text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">美學知識部落格</h1>
+      <p class="text-mi-text-light text-lg max-w-2xl mx-auto">
+        分享美睫保養、紋綉知識與美容秘訣，讓妳更了解自己的美麗需求
+      </p>
+    </div>
+  </section>
+  
+  <!-- Blog Content -->
+  <section class="section-padding bg-mi-white">
+    <div class="container-mi">
+      <div class="grid lg:grid-cols-3 gap-10">
+        <!-- Main Content -->
+        <div class="lg:col-span-2">
+          <!-- Featured Post -->
+          {featuredPost && (
+            <div class="mb-10">
+              <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <span class="text-mi-gold">★</span> 精選文章
+              </h2>
+              <BlogCard 
+                title={featuredPost.data.title}
+                description={featuredPost.data.description}
+                image={featuredPost.data.image}
+                publishDate={featuredPost.data.publishDate}
+                category={featuredPost.data.category}
+                tags={featuredPost.data.tags}
+                slug={featuredPost.slug}
+                author={featuredPost.data.author}
+                variant="horizontal"
+              />
+            </div>
+          )}
+          
+          <!-- All Posts -->
+          <h2 class="text-xl font-bold mb-6">所有文章</h2>
+          <div class="grid md:grid-cols-2 gap-6">
+            {otherPosts.map(post => (
+              <BlogCard 
+                title={post.data.title}
+                description={post.data.description}
+                image={post.data.image}
+                publishDate={post.data.publishDate}
+                category={post.data.category}
+                tags={post.data.tags}
+                slug={post.slug}
+                author={post.data.author}
+              />
+            ))}
+          </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="hidden lg:block">
+          <BlogSidebar />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+  <FloatingLineButton />
+</Layout>
