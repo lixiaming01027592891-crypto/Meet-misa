@@ -3,84 +3,79 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FloatingLineButton from '../components/FloatingLineButton.astro';
-import LineCTA from '../components/LineCTA.astro';
-import ServiceCard from '../components/ServiceCard.astro';
-import TestimonialCard from '../components/TestimonialCard.astro';
-import TrustBadge from '../components/TrustBadge.astro';
-import SectionTitle from '../components/SectionTitle.astro';
-import { getCollection } from 'astro:content';
-
-const services = await getCollection('services');
-const testimonials = await getCollection('testimonials');
-const featuredServices = services.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
-const featuredTestimonials = testimonials.filter(t => t.data.featured);
-
-const lineLink = 'https://line.me/R/ti/p/@782faclv';
 ---
 
 <Layout 
   title="遇見Mi美學館 | 台北美睫推薦 - 全台北公認最持久睫毛 | 雙連站美學館"
   description="遇見Mi美學館位於台北雙連站，提供超持久美睫、半永久紋綉、美容美體一站式服務。Google 5.0星評價(224評論)，比男友還持久的睫毛。LINE預約享優惠。"
 >
+  <!-- Section 1: 頂部信賴列 -->
+  <div class="bg-mi-warm h-10 flex items-center justify-center text-xs text-mi-gray tracking-wide">
+    <span class="flex items-center gap-2">
+      <span>2022 PEA國際冠軍</span>
+      <span class="text-mi-camel">·</span>
+      <span>SGS安全認證</span>
+      <span class="text-mi-camel">·</span>
+      <span>完全預約制</span>
+    </span>
+  </div>
+
+  <!-- Section 2: Header組件 -->
   <Header />
-  
-  <!-- Hero Section -->
-  <section class="min-h-screen flex items-center pt-[72px] bg-hero-gradient relative overflow-hidden">
-    <!-- Decorative background -->
-    <div class="absolute -top-1/2 -right-[20%] w-[80%] h-[150%] bg-gradient-to-b from-mi-pink/10 to-transparent rounded-full pointer-events-none"></div>
-    
-    <div class="container-mi relative z-10">
+
+  <!-- Section 3: Hero主視覺 -->
+  <section class="bg-white pt-[72px]">
+    <div class="container-mi py-16 md:py-24">
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <!-- Hero Content -->
-        <div class="text-center lg:text-left">
-          <!-- Badge -->
-          <div class="inline-flex items-center gap-2 bg-mi-pink/20 text-mi-pink-dark px-5 py-2 rounded-full text-sm font-semibold mb-6 animate-fade-in-up">
-            <span class="text-mi-gold tracking-wider">★★★★★</span>
-            <span>Google 5.0星 (224則真實評論)</span>
-          </div>
-          
-          <!-- Title -->
-          <h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-tight mb-6 animate-fade-in-up animate-delay-100">
-            全台北公認<br>
-            <span class="text-gradient-gold">最持久睫毛</span>
-            <span class="block text-2xl md:text-3xl font-medium text-mi-pink-dark mt-3">比男友還持久的睫毛 ✨</span>
-          </h1>
-          
-          <!-- Description -->
-          <p class="text-lg text-mi-text-light max-w-lg mx-auto lg:mx-0 mb-8 animate-fade-in-up animate-delay-200">
-            位於雙連站30秒，一站式美學服務。國際冠軍MiSa老師親自操作，SGS認證材料、日本黑膠，讓妳美得安心又持久。
+        <!-- 左：文字內容 -->
+        <div class="order-2 lg:order-1 text-center lg:text-left">
+          <p class="font-serif text-mi-camel text-lg tracking-widest mb-4">
+            遇見最美的自己
           </p>
-          
-          <!-- CTA Buttons -->
-          <div class="flex flex-wrap gap-4 justify-center lg:justify-start mb-10 animate-fade-in-up animate-delay-300">
-            <LineCTA variant="large" text="LINE免費諮詢" />
-            <a href="/portfolio" class="btn-secondary">查看作品集 →</a>
+          <h1 class="font-serif text-4xl md:text-5xl text-mi-dark leading-tight mb-6">
+            全台北公認<br>最持久睫毛
+          </h1>
+          <p class="text-mi-gray leading-relaxed mb-8 max-w-md mx-auto lg:mx-0">
+            國際冠軍MiSa老師親自操作，採用SGS認證材料與日本黑膠，客製化眼型設計，讓妳美得安心又持久。位於雙連站30秒，交通便利。
+          </p>
+          <div class="flex flex-wrap gap-4 justify-center lg:justify-start mb-10">
+            <a 
+              href="https://line.me/R/ti/p/@782faclv" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="btn-primary"
+              data-track="line"
+            >
+              立即預約
+            </a>
+            <a href="#services" class="btn-outline">
+              了解更多
+            </a>
           </div>
-          
-          <!-- Stats -->
-          <div class="flex gap-8 justify-center lg:justify-start animate-fade-in-up animate-delay-400">
+          <!-- 統計數據 -->
+          <div class="flex gap-8 justify-center lg:justify-start">
             <div class="text-center">
-              <div class="text-3xl font-extrabold text-gradient-gold">224+</div>
-              <div class="text-sm text-mi-text-light mt-1">5星好評</div>
+              <div class="font-serif text-2xl md:text-3xl text-mi-dark">224+</div>
+              <div class="text-sm text-mi-gray mt-1">5星好評</div>
             </div>
+            <div class="w-px bg-mi-border"></div>
             <div class="text-center">
-              <div class="text-3xl font-extrabold text-gradient-gold">10+</div>
-              <div class="text-sm text-mi-text-light mt-1">年專業經驗</div>
+              <div class="font-serif text-2xl md:text-3xl text-mi-dark">10+</div>
+              <div class="text-sm text-mi-gray mt-1">年經驗</div>
             </div>
+            <div class="w-px bg-mi-border"></div>
             <div class="text-center">
-              <div class="text-3xl font-extrabold text-gradient-gold">60+</div>
-              <div class="text-sm text-mi-text-light mt-1">天持久度</div>
+              <div class="font-serif text-2xl md:text-3xl text-mi-dark">60+</div>
+              <div class="text-sm text-mi-gray mt-1">天持久度</div>
             </div>
           </div>
         </div>
-        
-        <!-- Hero Image -->
-        <div class="relative animate-fade-in-right animate-delay-300">
-          <div class="absolute -inset-5 bg-gradient-to-br from-mi-pink/30 to-mi-gold/20 rounded-xl -z-10"></div>
+        <!-- 右：圖片 -->
+        <div class="order-1 lg:order-2">
           <img 
             src="/images/hero-model.jpg" 
             alt="遇見Mi美學館 - 台北美睫推薦，專業美睫服務"
-            class="w-full max-w-md mx-auto lg:max-w-full rounded-xl shadow-strong"
+            class="w-full rounded-2xl shadow-medium"
             loading="eager"
           />
         </div>
@@ -88,173 +83,340 @@ const lineLink = 'https://line.me/R/ti/p/@782faclv';
     </div>
   </section>
 
-  <!-- Trust Badges -->
-  <section class="py-12 bg-white border-b border-mi-pink/20">
-    <div class="container-mi">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <TrustBadge icon="🏆" title="國際冠軍技術" desc="2022 PEA國際6D美睫冠軍" />
-        <TrustBadge icon="✓" title="SGS安全認證" desc="材料通過SGS檢驗合格" />
-        <TrustBadge icon="💧" title="接完即可碰水" desc="獨家技術不需等待" />
-        <TrustBadge icon="🚇" title="雙連站30秒" desc="交通便利輕鬆抵達" />
-      </div>
+  <!-- Section 4: 品牌標語 -->
+  <section class="bg-mi-warm py-20">
+    <div class="container-mi text-center">
+      <h2 class="font-serif text-2xl md:text-3xl text-mi-dark mb-6">
+        讓每一次睜眼，都是自信的開始
+      </h2>
+      <div class="w-12 h-px bg-mi-camel mx-auto mb-4"></div>
+      <p class="text-mi-gray text-sm tracking-wide">
+        比男友還持久的睫毛
+      </p>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section class="section-padding bg-mi-white" id="services">
-    <div class="container-mi">
-      <SectionTitle 
-        title="我們的服務" 
-        subtitle="一站式美學服務，讓妳不用跑很多地方，也能享受全方位的美麗" 
-      />
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {featuredServices.map(service => (
-          <ServiceCard 
-            title={service.data.title}
-            description={service.data.description}
-            image={service.data.image}
-            badge={service.data.badge}
-            features={service.data.features}
-            href={`/services/${service.data.id}`}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Before/After Section -->
-  <section class="section-padding bg-gradient-to-br from-mi-cream to-mi-white">
-    <div class="container-mi">
-      <SectionTitle 
-        title="真實改造效果" 
-        subtitle="看看我們的客人變得多美 ✨ 所有照片皆為真實客戶授權分享" 
-      />
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-white rounded-lg overflow-hidden shadow-medium group cursor-pointer">
-          <div class="overflow-hidden">
-            <img 
-              src="/images/before-after-1.jpg" 
-              alt="美睫前後對比 - 6D美睫嫁接效果"
-              class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
-          </div>
-          <div class="p-6 text-center">
-            <h3 class="text-lg font-bold mb-1">6D美睫嫁接</h3>
-            <p class="text-mi-text-light text-sm">自然濃密，持久1.5-2個月</p>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg overflow-hidden shadow-medium group cursor-pointer">
-          <div class="overflow-hidden">
-            <img 
-              src="/images/before-after-2.jpg" 
-              alt="霧眉紋綉前後對比 - 星柔空氣眉效果"
-              class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
-          </div>
-          <div class="p-6 text-center">
-            <h3 class="text-lg font-bold mb-1">星柔空氣眉</h3>
-            <p class="text-mi-text-light text-sm">自然如眉粉輕刷的效果</p>
-          </div>
-        </div>
-      </div>
-      <div class="text-center mt-8">
-        <a href="/portfolio" class="btn-secondary">查看更多作品 →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reviews Section -->
-  <section class="section-padding bg-white">
-    <div class="container-mi">
-      <SectionTitle 
-        title="客人怎麼說" 
-        subtitle="Google 5.0星好評，224則真實評論，感謝每一位客人的信任與喜愛 💕" 
-      />
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {featuredTestimonials.map(t => (
-          <TestimonialCard 
-            name={t.data.name}
-            initials={t.data.initials}
-            service={t.data.service}
-            rating={t.data.rating}
-            text={t.data.text}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- About Preview -->
-  <section class="section-padding bg-gradient-to-br from-mi-white to-mi-cream">
-    <div class="container-mi">
+  <!-- Section 5: 服務項目（3個，圖文交替） -->
+  <section id="services" class="bg-white">
+    <!-- 服務1: 超持久美睫 -->
+    <div class="container-mi py-20 md:py-28">
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div class="order-2 lg:order-1">
+        <div>
           <img 
-            src="/images/team-misa.jpg" 
-            alt="遇見Mi美學館創辦人MiSa老師 - PEA國際6D美睫冠軍"
-            class="rounded-lg shadow-strong w-full max-w-md mx-auto"
+            src="/images/service-eyelash.jpg" 
+            alt="超持久美睫服務 - 6D美睫嫁接"
+            class="w-full rounded-2xl shadow-medium"
             loading="lazy"
           />
         </div>
-        <div class="order-1 lg:order-2">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">
-            遇見MiSa，<br><span class="text-gradient-gold">遇見更美的自己</span>
-          </h2>
-          <p class="text-mi-text-light leading-relaxed mb-4">
-            創辦人MiSa老師擁有2022 PEA國際6D美睫冠軍頭銜，從廣告設計到美睫藝術，將美感融入每一根睫毛。我們相信，美麗不應該是麻煩的事。
+        <div>
+          <h3 class="font-serif text-3xl md:text-4xl text-mi-dark mb-4">超持久美睫</h3>
+          <p class="text-mi-gray leading-relaxed mb-6">
+            國際冠軍技術，採用SGS認證日本黑膠，根據妳的眼型、睫毛條件客製化設計。3D/4D/5D/6D多種款式選擇，接完即可碰水，持久60天以上。
           </p>
-          <p class="text-mi-text-light leading-relaxed mb-8">
-            在遇見Mi美學館，妳可以享受一站式的美學服務——從超持久美睫、精緻紋綉到美容美體，讓妳不用跑很多地方，就能遇見最美的自己。
-          </p>
-          
-          <div class="grid grid-cols-2 gap-4 mb-8">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-gold-gradient flex items-center justify-center text-white text-sm flex-shrink-0">✓</div>
-              <span class="text-sm font-medium">一人一套拋棄式工具</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-gold-gradient flex items-center justify-center text-white text-sm flex-shrink-0">✓</div>
-              <span class="text-sm font-medium">SGS認證安全材料</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-gold-gradient flex items-center justify-center text-white text-sm flex-shrink-0">✓</div>
-              <span class="text-sm font-medium">客製化眼型設計</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-gold-gradient flex items-center justify-center text-white text-sm flex-shrink-0">✓</div>
-              <span class="text-sm font-medium">一週內免費保固</span>
-            </div>
+          <div class="flex flex-wrap gap-2 mb-8">
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">3D</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">4D</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">5D</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">6D</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">日本黑膠</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">SGS</span>
           </div>
-          
-          <a href="/about" class="btn-primary">了解更多關於我們 →</a>
+          <a href="/services/eyelash" class="inline-flex items-center gap-2 text-mi-dark font-medium hover:text-mi-camel transition-colors">
+            了解詳情 <span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- CTA Section -->
-  <section class="section-padding bg-cta-gradient relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-mi-pink/10 to-transparent pointer-events-none"></div>
-    <div class="container-mi relative z-10">
-      <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-          準備好遇見<span class="text-gradient-gold">更美的自己</span>了嗎？
-        </h2>
-        <p class="text-white/70 text-lg mb-10">
-          現在加入LINE好友，免費諮詢適合妳的美睫/紋綉方案，首次預約還有專屬優惠喔！
-        </p>
-        <div class="flex flex-wrap gap-4 justify-center">
-          <LineCTA variant="large" text="LINE免費諮詢" />
-          <a href="tel:0989260867" class="inline-flex items-center gap-2 text-white px-8 py-5 rounded-full font-semibold border-2 border-white/30 hover:bg-white/10 transition-all duration-300">
-            📞 0989-260-867
+    <!-- 服務2: 半永久紋綉 -->
+    <div class="bg-mi-warm">
+      <div class="container-mi py-20 md:py-28">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div class="order-2 lg:order-1">
+            <h3 class="font-serif text-3xl md:text-4xl text-mi-dark mb-4">半永久紋綉</h3>
+            <p class="text-mi-gray leading-relaxed mb-6">
+              星柔空氣眉、男士眉、霧唇等紋綉服務。老師畫到滿意才開始操作，無尷尬期，3個月內免費補色，讓妳每天多睡30分鐘。
+            </p>
+            <div class="flex flex-wrap gap-2 mb-8">
+              <span class="px-4 py-1.5 bg-white text-mi-gray text-sm rounded-full">星柔空氣眉</span>
+              <span class="px-4 py-1.5 bg-white text-mi-gray text-sm rounded-full">男士眉</span>
+              <span class="px-4 py-1.5 bg-white text-mi-gray text-sm rounded-full">霧唇</span>
+              <span class="px-4 py-1.5 bg-white text-mi-gray text-sm rounded-full">無尷尬期</span>
+              <span class="px-4 py-1.5 bg-white text-mi-gray text-sm rounded-full">免費補色</span>
+            </div>
+            <a href="/services/embroidery" class="inline-flex items-center gap-2 text-mi-dark font-medium hover:text-mi-camel transition-colors">
+              了解詳情 <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+          <div class="order-1 lg:order-2">
+            <img 
+              src="/images/service-embroidery.jpg" 
+              alt="半永久紋綉服務 - 星柔空氣眉"
+              class="w-full rounded-2xl shadow-medium"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 服務3: 美容美體 -->
+    <div class="container-mi py-20 md:py-28">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div>
+          <img 
+            src="/images/service-beauty.jpg" 
+            alt="美容美體服務"
+            class="w-full rounded-2xl shadow-medium"
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <h3 class="font-serif text-3xl md:text-4xl text-mi-dark mb-4">美容美體</h3>
+          <p class="text-mi-gray leading-relaxed mb-6">
+            臉部護理、毛孔清潔、按摩放鬆等美容美體服務。一站式美學體驗，讓妳不用跑很多地方，也能享受全方位的美麗與放鬆。
+          </p>
+          <div class="flex flex-wrap gap-2 mb-8">
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">臉部護理</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">毛孔清潔</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">按摩放鬆</span>
+            <span class="px-4 py-1.5 bg-mi-warm text-mi-gray text-sm rounded-full">一站式服務</span>
+          </div>
+          <a href="/services/beauty" class="inline-flex items-center gap-2 text-mi-dark font-medium hover:text-mi-camel transition-colors">
+            了解詳情 <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Section 6: 為什麼選擇遇見Mi -->
+  <section class="bg-mi-beige py-20 md:py-28">
+    <div class="container-mi">
+      <h2 class="font-serif text-2xl md:text-3xl text-mi-dark text-center mb-16">
+        為什麼選擇遇見Mi
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 卡片1 -->
+        <div class="bg-white rounded-2xl p-8 text-center">
+          <div class="text-4xl mb-4">🏆</div>
+          <h4 class="font-medium text-mi-dark mb-2">國際冠軍</h4>
+          <p class="text-mi-gray text-sm leading-relaxed">2022 PEA國際6D美睫冠軍親自操作，技術有保證</p>
+        </div>
+        <!-- 卡片2 -->
+        <div class="bg-white rounded-2xl p-8 text-center">
+          <div class="text-4xl mb-4">✓</div>
+          <h4 class="font-medium text-mi-dark mb-2">SGS認證</h4>
+          <p class="text-mi-gray text-sm leading-relaxed">所有材料通過SGS安全檢驗，讓妳美得安心</p>
+        </div>
+        <!-- 卡片3 -->
+        <div class="bg-white rounded-2xl p-8 text-center">
+          <div class="text-4xl mb-4">✎</div>
+          <h4 class="font-medium text-mi-dark mb-2">客製設計</h4>
+          <p class="text-mi-gray text-sm leading-relaxed">根據眼型、睫毛條件量身設計，打造專屬美睫</p>
+        </div>
+        <!-- 卡片4 -->
+        <div class="bg-white rounded-2xl p-8 text-center">
+          <div class="text-4xl mb-4">💧</div>
+          <h4 class="font-medium text-mi-dark mb-2">接完碰水</h4>
+          <p class="text-mi-gray text-sm leading-relaxed">獨家技術，嫁接完成即可正常洗臉碰水</p>
+        </div>
+        <!-- 卡片5 -->
+        <div class="bg-white rounded-2xl p-8 text-center">
+          <div class="text-4xl mb-4">🛡</div>
+          <h4 class="font-medium text-mi-dark mb-2">拋棄式工具</h4>
+          <p class="text-mi-gray text-sm leading-relaxed">一人一套全新拋棄式工具，衛生安全無疑慮</p>
+        </div>
+        <!-- 卡片6 -->
+        <div class="bg-white rounded-2xl p-8 text-center">
+          <div class="text-4xl mb-4">♥</div>
+          <h4 class="font-medium text-mi-dark mb-2">滿意保證</h4>
+          <p class="text-mi-gray text-sm leading-relaxed">一週內免費保固，確保每位客人滿意成果</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: 客人評價 -->
+  <section class="bg-white py-20 md:py-28">
+    <div class="container-mi">
+      <h2 class="font-serif text-2xl md:text-3xl text-mi-dark text-center mb-2">客人怎麼說</h2>
+      <p class="text-center text-mi-gray text-sm mb-12">Google 5.0星 · 224則真實評論</p>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- 評價1 -->
+        <div class="bg-white border border-mi-border rounded-xl p-8">
+          <div class="flex items-center gap-1 mb-4">
+            <span class="text-mi-camel text-sm">★★★★★</span>
+          </div>
+          <p class="text-mi-gray leading-relaxed text-sm mb-6">
+            「已經回來好幾次接睫毛了，每次都能撐很久也不會變形！MiSa老師技術超好，過程完全不燻眼，推薦給所有愛美的女孩們！」
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-mi-warm flex items-center justify-center text-mi-dark font-medium text-sm">K</div>
+            <div>
+              <div class="text-mi-dark font-medium text-sm">Kate K.</div>
+              <div class="text-mi-gray text-xs">6D美睫常客</div>
+            </div>
+          </div>
+        </div>
+        <!-- 評價2 -->
+        <div class="bg-white border border-mi-border rounded-xl p-8">
+          <div class="flex items-center gap-1 mb-4">
+            <span class="text-mi-camel text-sm">★★★★★</span>
+          </div>
+          <p class="text-mi-gray leading-relaxed text-sm mb-6">
+            「第一次接睫毛就來遇見Mi，老師超級細心，會根據眼型設計適合的款式。接完直接碰水超方便，已經推薦給身邊所有朋友！」
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-mi-warm flex items-center justify-center text-mi-dark font-medium text-sm">陳</div>
+            <div>
+              <div class="text-mi-dark font-medium text-sm">陳俞均</div>
+              <div class="text-mi-gray text-xs">美睫初體驗</div>
+            </div>
+          </div>
+        </div>
+        <!-- 評價3 -->
+        <div class="bg-white border border-mi-border rounded-xl p-8">
+          <div class="flex items-center gap-1 mb-4">
+            <span class="text-mi-camel text-sm">★★★★★</span>
+          </div>
+          <p class="text-mi-gray leading-relaxed text-sm mb-6">
+            「霧眉做完超自然，完全沒有蠟筆小新的尷尬期！老師畫到滿意才開始操作，3個月內還免費補色，服務真的沒話說！」
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-mi-warm flex items-center justify-center text-mi-dark font-medium text-sm">N</div>
+            <div>
+              <div class="text-mi-dark font-medium text-sm">奈奈</div>
+              <div class="text-mi-gray text-xs">星柔空氣眉</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: 作品集 -->
+  <section class="bg-mi-warm py-20 md:py-28">
+    <div class="container-mi">
+      <h2 class="font-serif text-2xl md:text-3xl text-mi-dark text-center mb-12">真實改造效果</h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="overflow-hidden rounded-xl group cursor-pointer">
+          <img 
+            src="/images/before-after-1.jpg" 
+            alt="美睫前後對比"
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+        <div class="overflow-hidden rounded-xl group cursor-pointer">
+          <img 
+            src="/images/before-after-2.jpg" 
+            alt="霧眉前後對比"
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+        <div class="overflow-hidden rounded-xl group cursor-pointer">
+          <img 
+            src="/images/service-eyelash.jpg" 
+            alt="美睫作品"
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+        <div class="overflow-hidden rounded-xl group cursor-pointer">
+          <img 
+            src="/images/service-embroidery.jpg" 
+            alt="紋綉作品"
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <div class="text-center mt-10">
+        <a href="/portfolio" class="btn-outline">
+          查看完整作品集 <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 9: 關於MiSa老師 -->
+  <section class="bg-white py-20 md:py-28">
+    <div class="container-mi">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- 左：圖片 -->
+        <div>
+          <img 
+            src="/images/team-misa.jpg" 
+            alt="遇見Mi美學館創辦人MiSa老師"
+            class="w-full rounded-2xl shadow-medium"
+            loading="lazy"
+          />
+        </div>
+        <!-- 右：文字 -->
+        <div>
+          <p class="text-mi-camel tracking-widest text-sm mb-3">創辦人 / 首席美睫師</p>
+          <h2 class="font-serif text-3xl md:text-4xl text-mi-dark mb-6">遇見MiSa</h2>
+          <p class="text-mi-gray leading-relaxed mb-4">
+            學廣告設計出身，曾從事寵物美容，對美感有過人執著。現為Ms.R Lashes台北講師，將美感融入每一根睫毛，讓每位客人都能遇見最美的自己。
+          </p>
+          <p class="text-mi-gray leading-relaxed mb-8">
+            從廣告設計到美睫藝術，MiSa老師始終堅持「美麗不應該是麻煩的事」。在遇見Mi美學館，妳可以享受一站式美學服務，不用跑很多地方，就能遇見最美的自己。
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-mi-gray text-sm">
+              <span class="text-mi-camel">✦</span>
+              2022 PEA國際6D美睫冠軍
+            </li>
+            <li class="flex items-center gap-3 text-mi-gray text-sm">
+              <span class="text-mi-camel">✦</span>
+              中華民國美容師乙級證照
+            </li>
+            <li class="flex items-center gap-3 text-mi-gray text-sm">
+              <span class="text-mi-camel">✦</span>
+              Ms.R Lashes台北講師
+            </li>
+          </ul>
+          <a href="/about" class="inline-flex items-center gap-2 text-mi-dark font-medium hover:text-mi-camel transition-colors">
+            認識MiSa老師 <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 10: CTA行動呼籲 -->
+  <section class="bg-mi-dark py-20 md:py-28">
+    <div class="container-mi text-center">
+      <h2 class="font-serif text-3xl md:text-4xl text-white mb-4">
+        準備好遇見更美的自己了嗎？
+      </h2>
+      <p class="text-white/60 mb-10">
+        現在預約，首次體驗享專屬優惠
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a 
+          href="https://line.me/R/ti/p/@782faclv" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="btn-line"
+          data-track="line"
+        >
+          <img src="/images/line-icon.png" alt="" class="w-5 h-5 rounded-full" loading="lazy" />
+          LINE免費諮詢
+        </a>
+        <a href="tel:0989260867" class="inline-flex items-center gap-2 text-white px-8 py-3.5 rounded-full font-medium text-sm tracking-wider border border-white/30 hover:bg-white/10 transition-all duration-300">
+          撥打電話
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 11: Footer -->
   <Footer />
+
+  <!-- Section 12: Floating LINE Button -->
   <FloatingLineButton />
 </Layout>
